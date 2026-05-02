@@ -1,0 +1,61 @@
+<template>
+  <div class="fixed bottom-8 right-8 z-[60] flex flex-col items-end">
+    <!-- Area Selection Menu -->
+    <Transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="transform scale-95 opacity-0 translate-y-4"
+      enter-to-class="transform scale-100 opacity-100 translate-y-0"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="transform scale-100 opacity-100 translate-y-0"
+      leave-to-class="transform scale-95 opacity-0 translate-y-4"
+    >
+      <div v-if="isOpen" class="mb-4 bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 w-64">
+        <h4 class="font-bold text-slate-900 mb-3 px-2">Pilih Cabang Terdekat:</h4>
+        <div class="space-y-2">
+          <button 
+            v-for="branch in branches" 
+            :key="branch.name"
+            @click="routeToWA(branch.phone)"
+            class="w-full text-left px-3 py-2 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-colors flex justify-between items-center group"
+          >
+            <span>{{ branch.name }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Main Button -->
+    <button 
+      @click="isOpen = !isOpen"
+      class="bg-[#25D366] hover:bg-[#20ba5a] text-white p-4 rounded-full shadow-2xl shadow-green-200 transition-all duration-300 transform hover:scale-110 flex items-center justify-center relative group"
+    >
+      <span v-if="!isOpen" class="absolute right-full mr-4 bg-slate-900 text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        Pesan Via WhatsApp
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.63 1.438h.004c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+    </button>
+  </div>
+</template>
+
+<script setup>
+const isOpen = ref(false)
+
+const branches = [
+  { name: 'Cabang Sleman (Mlati)', phone: '6281234567890' },
+  { name: 'Cabang Sleman (Depok)', phone: '6281234567891' },
+  { name: 'Cabang Bantul (Kasihan)', phone: '6281234567892' },
+  { name: 'Cabang Jogja (Umbulharjo)', phone: '6281234567893' },
+  { name: 'Cabang Jogja (Jetis)', phone: '6281234567894' }
+]
+
+const routeToWA = (phone) => {
+  const message = encodeURIComponent('Halo Tirta Agung, saya ingin memesan air isi ulang.')
+  window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+  isOpen.value = false
+}
+</script>
